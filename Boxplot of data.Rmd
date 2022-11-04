@@ -1,0 +1,62 @@
+---
+title: "Boxplot of data"
+author: "RHL"
+date: "1/20/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+##Packages
+#install.packages("ggplot2")
+library(ggplot2)
+setwd("U:/public/ADMIN/WQIntern TQuneibi/R code/")
+```
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r DataImport}
+  file_list <- list.files(pattern = ".csv")
+  nitrite <- read.csv("nitrite_data.csv")
+  nitrite <- nitrite[ 2:79, 1:9]
+  nitrite[is.na(nitrite)] = 0
+	attach(nitrite)
+#Must do the following if x is not a number: 
+#xFactor<-as.factor(x)
+#is.factor(xFactor)
+	colnames(nitrite) <- c("Date", "Peak", "Date of peak", "Date to below 10ppb", "bin", "Filter change date", "days from peak to below 10ppb", "Days from begn to 10 ppb", "Days from changout to peak")
+	
+
+
+```
+
+```{splitting into individual years}
+nitrite_2019 <- nitrite[seq(1, nrow(nitrite), by=3), ]
+nitrite_2020 <- nitrite[seq(2, nrow(nitrite), by=3), ]
+nitrite_2021 <- nitrite[seq(3, nrow(nitrite), by=3), ]
+
+```
+
+## Boxplot of data
+
+Boxplot included below.
+
+```{r pressure, echo=TRUE}
+
+	boxplot(nitrite_2020$Peak~bin, col=rainbow(4),
+		main = "Peak nitrite for each season",
+        xlab = "Season",
+        ylab = "Concentration")
+        
+        
+```
+
+## Note that the `echo = TRUE` parameter was added to the code chunk to keep printing of the R code that generated the plot.
